@@ -10,10 +10,12 @@ echo 'Cloning' $url '...'
 git clone $url $d/loco
 
 # Download/unzip images
-sh $d"loco/utils/download.sh" 
+sh "../loco/utils/download.sh" 
 
 # Download/unzip darknet formatted labels
-sh $d"loco/utils/darknet.sh"
+sh "../loco/utils/darknet.sh"
+
+mv ../dataset/ ../loco/
 
 # Restructure data
 mkdir -p ../loco/dataset/images/synth ../loco/dataset/images/train ../loco/dataset/images/val  
@@ -24,8 +26,8 @@ f2=val
 f3=train
 for f in $f1 $f2 $f3; do
   echo 'Restructuring LOCO' $f '...'
-  find ../loco/dataset/$f -name '*.jpg' -exec mv {} ../loco/dataset/images/$f/ \;
-  find ../loco/dataset/$f -name '*.txt' -exec mv {} ../loco/dataset/labels/$f/ \;
-  rm ../loco/dataset/$f -rf
+  find ../loco/dataset/$f/ -name '*.jpg' -exec mv {} ../loco/dataset/images/$f/ \;
+  find ../loco/dataset/$f/ -name '*.txt' -exec mv {} ../loco/dataset/labels/$f/ \;
+  #rm ../loco/dataset/$f -rf
 done
 wait # finish background tasks
