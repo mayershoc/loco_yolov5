@@ -8,18 +8,18 @@ TEACHER=$( echo $WEIGHTS | cut -d/ -f3 )
 STUDENT="trained_by_$TEACHER"
 D="runs/pseudo"
 
-BATCH="--batch-size 8"
+BATCH="--batch-size 6"
 COMMON="--epochs 30 $BATCH"
 
 # Pseudo label the data and save output under 'runs/pseudo/'
 python detect.py --weights $WEIGHTS --source ../loco/dataset/images/unlabelled/ --conf-thres 0.7 --save-txt --augment --project $D --name $TEACHER
 
 # Restructure labels to comply to yolov5 folder structure
-find runs/pseudo/labelled_by_$TEACHER -name '*.jpg' -exec rm {} \;
+find runs/pseudo/$TEACHER -name '*.jpg' -exec rm {} \;
 # Compress labels for storing
-zip $D/$STUDENT/{date -I}_label.zip $D/$STUDENT/labels/*
+zip $D/$TEACHER/$(date -I)_label.zip $D/$TEACHER/labels/*
 # Move and rename labels to corresponding loco path
-mv $D/$STUDENT/labels ../loco/dataset/labels/unlabelled
+mv $D/$TEACHER/labels ../loco/dataset/labels/unlabelled
 
 # Train the Student: 
 # Student: Data: LOCO_train + LOCO_synth + LOCO_unlabelled, Pretrained: COCO
