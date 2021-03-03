@@ -5,7 +5,8 @@ Training repository for [YOLOv5](https://github.com/ultralytics/yolov5) and the 
 
 # Quickstart
 1. Spin up the container `bash start.sh`
-2. Within the container, install Weights&Biases: `pip install wandb`
+2. Optional: Within the container, install Weights&Biases: `pip install wandb` and login `wandb login`.
+3. Download the LOCO Dataset `bash data/scripts/get_loco.sh`
 3. Train a model on loco
   ```
   $ python train.py --data loco_all.yaml  # train a model
