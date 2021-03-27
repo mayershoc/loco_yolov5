@@ -9,25 +9,28 @@ url=https://github.com/mayershoc/loco
 echo 'Cloning' $url '...'
 git clone $url $d/loco
 
-# Download/unzip images
-sh "../loco/utils/download.sh" 
+# Download images and darknet labels using provided scripts
+cd $d/loco
+bash utils/get_loco.sh
+bash utils/get_darknet_labels.sh
 
-# Download/unzip darknet formatted labels
-sh "../loco/utils/darknet.sh"
-
-mv ../dataset/ ../loco/
-
-# Restructure data
-mkdir -p ../loco/dataset/images/synth ../loco/dataset/images/train ../loco/dataset/images/val  
-mkdir -p ../loco/dataset/labels/synth ../loco/dataset/labels/train ../loco/dataset/labels/val
-
-f1=synth
-f2=val
-f3=train
-for f in $f1 $f2 $f3; do
-  echo 'Restructuring LOCO' $f '...'
-  find ../loco/dataset/$f/ -name '*.jpg' -exec mv {} ../loco/dataset/images/$f/ \;
-  find ../loco/dataset/$f/ -name '*.txt' -exec mv {} ../loco/dataset/labels/$f/ \;
-  #rm ../loco/dataset/$f -rf
+# Restructure images to comply with yolov5 folder structure
+cd dataset
+mkdir images
+for d in */ ; do
+    if [ $d != 'images/' ]
+    then
+        echo 'Restructuring' $d 'folder ...'
+        # Move images from subfolders to top level directory
+        find $d -name '*.jpg' -exec mv {} $d -n \;
+        # Remove subfolders
+        find $d -mindepth 1 -maxdepth 1 -type d -exec rm {} -rf \;
+        mv $d images 
+    fi
 done
-wait # finish background tasks
+
+# Restructure labels to comply with yolov5 folder structure
+cd ../
+mkdir dataset/labels
+mv annotations/darknet/* dataset/labels/
+

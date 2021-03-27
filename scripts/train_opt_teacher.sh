@@ -7,4 +7,3 @@ COMMON="--epochs 30 $BATCH"
 
 # Teacher 6: Data: LOCO_train + LOCO_synth, Pretrained: COCO, hyperparameter tuning on
 python train.py --data loco_all.yaml --weights 'yolov5x.pt' --name 'teacher_6_optimized' --hyp 'data/hyp.loco.evolved.yaml' $COMMON
-
