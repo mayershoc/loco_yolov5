@@ -1,0 +1,15 @@
+# LOCO dataset https://github.com/tum-fml/loco
+# Train command: python train.py --data loco.yaml
+
+# download command/URL
+download: bash data/scripts/get_loco.sh
+
+# train and val data as 1) directory: path/images/, 2) file: path/images.txt, or 3) list: [path1/images/, path2/images/]
+train: [../loco/dataset/images/train/, ../loco/dataset/images/synth/, ../loco/dataset/images/nat-unlabelled/, ../loco/dataset/images/web-unlabelled/]  
+val: ../loco/dataset/images/val/ 
+
+# number of classes
+nc: 6
+
+# class names
+names: ['person', 'small load carrier', 'forklift', 'pallet', 'stillage', 'pallet truck']
