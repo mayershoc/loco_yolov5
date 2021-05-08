@@ -29,10 +29,10 @@ function pseudolabel() {
     local DIR='runs/pseudo/'
 
     # Perform detection and save them as labels
-    python detect.py --weights "$WEIGHTS" --source "$PATH_TO_DATA_IMAGES" --conf-thres "$CONF" --save-txt --augment --project "$DIR" --name "$NAME"
+    python detect.py --weights "$WEIGHTS" --source "$PATH_TO_DATA_IMAGES" --conf-thres "$CONF" --save-txt --augment --project "$DIR" --name "$NAME" --no-save
 
     # Clean up the mess
-    find "$DIR$NAME" -name '*.jpg' -exec rm {} \;                # Restructure labels to comply to yolov5 folder structure
+    # find "$DIR$NAME" -name '*.jpg' -exec rm {} \;	# Remove images
     zip -r "$DIR$NAME/$(date -I)_label.zip" "$DIR$NAME/labels/"     # Compress labels for storing
     rm  "$PATH_TO_DATA_ROOT/labels/*.cache"			   # Remove cache
     rm -rf "$PATH_TO_DATA_LABELS"                                  # Remove old labels
